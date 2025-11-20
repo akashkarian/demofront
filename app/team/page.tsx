@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/sidebar';
 import InviteUserModal from '@/components/team/InviteUserModal';
 
 interface CompanyUser {
@@ -138,11 +139,14 @@ export default function TeamPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            <p className="mt-4 text-gray-600">Loading team members...</p>
+      <div className="flex h-full">
+        <Sidebar user={user} />
+        <div className="flex-1 overflow-y-auto p-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              <p className="mt-4 text-gray-600">Loading team members...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -150,8 +154,10 @@ export default function TeamPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="flex h-full">
+      <Sidebar user={user} />
+      <div className="flex-1 overflow-y-auto p-8">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -273,6 +279,7 @@ export default function TeamPage() {
         {/* User Count */}
         <div className="mt-4 text-sm text-gray-600">
           Total: {users.length} {users.length === 1 ? 'user' : 'users'}
+        </div>
         </div>
       </div>
 
