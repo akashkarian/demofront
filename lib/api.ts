@@ -1,11 +1,7 @@
 import { supabase } from "./supabase";
 import { withCache, cache } from "./cache";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-if (!BACKEND_URL) {
-  throw new Error("NEXT_PUBLIC_BACKEND_URL environment variable is not set");
-}
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://placeholder-backend.com";
 
 // Types
 export interface ChatHistoryItem {
@@ -205,10 +201,7 @@ export async function searchOptimized(data: {
   const baseHeaders = await getAuthHeaders();
 
   // Add X-API-Key to the headers (from environment variable)
-  const apiKey = process.env.NEXT_PUBLIC_CORTEX_API_KEY;
-  if (!apiKey) {
-    throw new Error("NEXT_PUBLIC_CORTEX_API_KEY environment variable is not set");
-  }
+  const apiKey = process.env.NEXT_PUBLIC_CORTEX_API_KEY || "placeholder-api-key";
 
   const headers = {
     ...baseHeaders,
