@@ -45,9 +45,8 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const navigation = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
-    { name: "Reports", href: "/reports", icon: FileText },
-    { name: "Team", href: "/team", icon: Users },
     { name: "Daily Reports", href: "/daily-reports", icon: Calendar },
+    { name: "Team", href: "/team", icon: Users },
   ];
 
   // Load chat history only once when user is available
