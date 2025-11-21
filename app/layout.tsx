@@ -20,17 +20,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  return (
-    <div style={{
-      backgroundColor: '#ffffff',
-      height: 'calc(100vh - 12px)',
-      overflow: 'hidden',
-      position: 'relative',
-      borderTopRightRadius: '16px'
-    }}>
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 }
 
 function BodyContent({ children }: { children: React.ReactNode }) {
@@ -39,7 +29,7 @@ function BodyContent({ children }: { children: React.ReactNode }) {
 
   const bodyStyle: React.CSSProperties = isLoginPage
     ? {}
-    : { backgroundColor: '#30465C', padding: '12px 12px 0 0', margin: 0, height: '100vh', overflow: 'hidden', boxSizing: 'border-box' as const };
+    : { backgroundColor: '#ffffff', margin: 0, height: '100vh', overflow: 'hidden', boxSizing: 'border-box' as const };
 
   return (
     <body className={inter.className} style={bodyStyle}>

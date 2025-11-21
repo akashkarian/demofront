@@ -29,10 +29,10 @@ const isDemoModeEnabled = () => {
 const createDemoUser = (): User => {
   return {
     id: "demo-user-id",
-    email: "demo@example.com",
+    email: "Demo@highforce.ai",
     app_metadata: {},
     user_metadata: {
-      name: "Demo User",
+      name: "Demo",
     },
     aud: "authenticated",
     created_at: new Date().toISOString(),
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           // Try to sign in with demo credentials
           const { data, error } = await supabase.auth.signInWithPassword({
-            email: "demo@highforce.ai",
+            email: "Demo@highforce.ai",
             password: "demo123456",
           });
 

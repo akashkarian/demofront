@@ -193,8 +193,12 @@ export default function DailyReportsPage() {
   };
 
   return (
-    <div className="flex h-full">
-      <Sidebar user={user} />
+    <div className="flex h-screen bg-white">
+      <div className="p-6">
+        <div className="rounded-3xl overflow-hidden" style={{ height: 'calc(100vh - 48px)', backgroundColor: '#E3E4EA' }}>
+          <Sidebar user={user} />
+        </div>
+      </div>
       <div className="flex-1 overflow-y-auto p-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">

@@ -6,7 +6,7 @@ import { sendChatMessage, getChatMessages, getSourceDocument } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/auth-context";
 import Sidebar from "@/components/sidebar";
-import { Send, Loader2, Mail, HardDrive, File, Sheet, Presentation, FileImage, Database, MessageSquare, Building2, DollarSign, FileText, ExternalLink, Sparkles, ChevronDown, ChevronRight, Download, X } from "lucide-react";
+import { Send, Loader2, Mail, HardDrive, File, Sheet, Presentation, FileImage, Database, MessageSquare, Building2, DollarSign, FileText, ExternalLink, Sparkles, ChevronDown, ChevronRight, Download, X, ArrowUp, Plus, Mic } from "lucide-react";
 import SmartMarkdown from '@/components/SmartMarkdown';
 
 interface Source {
@@ -211,8 +211,13 @@ function SearchPageContent() {
   if (!user) return null;
 
   return (
-    <div className="flex h-full">
-      <Sidebar user={user} />
+    <div className="flex h-screen bg-white">
+      {/* Grey bubble sidebar wrapper */}
+      <div className="p-6">
+        <div className="rounded-3xl overflow-hidden" style={{ height: 'calc(100vh - 48px)', backgroundColor: '#E3E4EA' }}>
+          <Sidebar user={user} />
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -221,18 +226,23 @@ function SearchPageContent() {
           <div className={`max-w-5xl mx-auto space-y-4 ${messages.length > 0 ? 'pt-20' : ''}`}>
             {messages.length === 0 && (
               <div className="flex flex-col items-center justify-center min-h-[calc(100vh-12rem)] pt-[10vh]">
-                <h2 className="text-2xl font-normal text-gray-900 mb-3">Ask me anything, {user?.email?.split('@')[0] || 'there'}</h2>
+                <h2 className="text-2xl font-normal text-gray-900 mb-3">Ask me anything, {user?.user_metadata?.name || user?.email?.split('@')[0] || 'there'}</h2>
                 <p className="text-gray-600 text-center max-w-md mb-8 text-base font-light">
                   Search across all your connected documents, emails, and data sources
                 </p>
 
                 {/* Search Bar */}
-                <div className="w-full max-w-5xl mb-8 px-4">
+                <div className="w-full max-w-3xl mb-8 px-4">
                   <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                     <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-gray-800/10 to-black/10 rounded-2xl blur-xl"></div>
-                      <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl shadow-sm border border-gray-300">
-                        <div className="flex items-end gap-3 p-4">
+                      <div className="relative bg-white/95 backdrop-blur-xl rounded-full border border-gray-300" style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                        <div className="flex items-center gap-3 pl-4 pr-6 py-3">
+                          <button
+                            type="button"
+                            className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200"
+                          >
+                            <Plus className="h-6 w-6 text-gray-600" style={{ strokeWidth: 1.7 }} />
+                          </button>
                           <textarea
                             value={input}
                             onChange={(e) => {
@@ -247,18 +257,27 @@ function SearchPageContent() {
                                 handleSearch();
                               }
                             }}
-                            placeholder="What can I help you with?"
-                            className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 text-sm resize-none max-h-[400px] overflow-y-auto leading-tight"
+                            placeholder="Ask me anything..."
+                            className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 text-sm resize-none max-h-[400px] overflow-y-auto"
                             disabled={loadingChat}
                             rows={1}
                             style={{ height: '20px', lineHeight: '20px' }}
                           />
                           <button
+                            type="button"
+                            className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200"
+                          >
+                            <Mic className="h-5 w-5 text-gray-600" />
+                          </button>
+                          <button
                             type="submit"
                             disabled={!input.trim() || loadingChat}
-                            className="w-10 h-10 flex-shrink-0 rounded-xl bg-black hover:bg-gray-800 text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+                            className="w-10 h-10 flex-shrink-0 rounded-full text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+                            style={{ backgroundColor: '#2c8492' }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#258290'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2c8492'}
                           >
-                            <Send className="h-4 w-4" />
+                            <ArrowUp className="h-6 w-6" />
                           </button>
                         </div>
                       </div>
@@ -416,12 +435,17 @@ function SearchPageContent() {
         {/* Input Area - Fixed at bottom (only show when there are messages) */}
         {messages.length > 0 && (
         <div className="fixed bottom-6 left-64 right-0 flex justify-center px-4 z-50 pointer-events-none">
-          <div className="w-full max-w-5xl pointer-events-auto">
+          <div className="w-full max-w-3xl pointer-events-auto">
             <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-gray-800/10 to-black/10 rounded-2xl blur-xl"></div>
-                <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl shadow-sm border border-gray-300">
-                  <div className="flex items-end gap-3 p-4">
+                <div className="relative bg-white/95 backdrop-blur-xl rounded-full border border-gray-300" style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                  <div className="flex items-center gap-3 pl-4 pr-6 py-3">
+                    <button
+                      type="button"
+                      className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200"
+                    >
+                      <Plus className="h-6 w-6 text-gray-600" style={{ strokeWidth: 1.7 }} />
+                    </button>
                     <textarea
                       value={input}
                       onChange={(e) => {
@@ -436,18 +460,27 @@ function SearchPageContent() {
                           handleSearch();
                         }
                       }}
-                      placeholder="Ask a question..."
-                      className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 text-sm resize-none max-h-[400px] overflow-y-auto leading-tight"
+                      placeholder="Ask me anything..."
+                      className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 text-sm resize-none max-h-[400px] overflow-y-auto"
                       disabled={loadingChat}
                       rows={1}
                       style={{ height: '20px', lineHeight: '20px' }}
                     />
                     <button
+                      type="button"
+                      className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200"
+                    >
+                      <Mic className="h-5 w-5 text-gray-600" />
+                    </button>
+                    <button
                       type="submit"
                       disabled={!input.trim() || loadingChat}
-                      className="w-10 h-10 flex-shrink-0 rounded-xl bg-black hover:bg-gray-800 text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+                      className="w-10 h-10 flex-shrink-0 rounded-full text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+                      style={{ backgroundColor: '#2c8492' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#258290'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2c8492'}
                     >
-                      <Send className="h-4 w-4" />
+                      <ArrowUp className="h-6 w-6" />
                     </button>
                   </div>
                 </div>
