@@ -116,7 +116,7 @@ const SmartMarkdown = ({ content, onLinkClick }: SmartMarkdownProps) => {
       );
     },
     hr: () => (
-      <hr className="border-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-6" />
+      <hr className="border-t border-gray-100 my-4" />
     )
   }
 

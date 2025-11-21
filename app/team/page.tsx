@@ -160,7 +160,7 @@ export default function TeamPage() {
   return (
     <div className="flex h-screen bg-white">
       <div className="p-6">
-        <div className="rounded-3xl overflow-hidden" style={{ height: 'calc(100vh - 48px)', backgroundColor: '#E3E4EA' }}>
+        <div className="rounded-3xl" style={{ height: 'calc(100vh - 48px)', backgroundColor: '#E3E4EA', boxShadow: '4px 4px 12px rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
           <Sidebar user={user} />
         </div>
       </div>

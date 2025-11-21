@@ -38,11 +38,11 @@ export default function Sidebar({ user }: SidebarProps) {
   const [historyExpanded, setHistoryExpanded] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  // Mock chat history for demo
+  // Mock chat history for demo - using actual chat IDs from demo-data.ts
   const mockChats = [
-    { id: "1", title: "Q3 Revenue Analysis", created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() },
-    { id: "2", title: "Client Meeting Notes", created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
-    { id: "3", title: "Product Launch Plan", created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+    { id: "chat_001", title: "ACME Corp project status", created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() },
+    { id: "chat_002", title: "Q4 Revenue Analysis", created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
+    { id: "chat_003", title: "Client Meeting Notes", created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
   ];
 
   // Prevent hydration mismatch
@@ -108,7 +108,7 @@ export default function Sidebar({ user }: SidebarProps) {
   };
 
   return (
-    <div className="w-64 h-full rounded-3xl p-6 flex flex-col" style={{ backgroundColor: '#E3E4EA', border: 'none', boxShadow: 'none' }}>
+    <div className="w-64 h-full rounded-3xl p-6 flex flex-col" style={{ backgroundColor: '#E3E4EA', border: 'none', boxShadow: '4px 4px 12px rgba(0, 0, 0, 0.08)' }}>
       {/* Logo */}
       <div className="mb-8">
         <Link href="/">
@@ -128,7 +128,7 @@ export default function Sidebar({ user }: SidebarProps) {
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-normal ${
             pathname === "/search"
               ? "bg-white text-gray-800 shadow-sm"
-              : "text-gray-700 hover:bg-white/50"
+              : "text-gray-700 hover:bg-white/40"
           }`}
         >
           <SearchIcon className="h-4 w-4" />
@@ -151,7 +151,7 @@ export default function Sidebar({ user }: SidebarProps) {
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-normal ${
                     isActive
                       ? "bg-white text-gray-800 shadow-sm"
-                      : "text-gray-700 hover:bg-white/50"
+                      : "text-gray-700 hover:bg-white/40"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -167,14 +167,14 @@ export default function Sidebar({ user }: SidebarProps) {
       <div className="border-t border-gray-300 pt-4 pb-4 flex-1">
         <button
           onClick={() => setHistoryExpanded(!historyExpanded)}
-          className="w-full flex items-center justify-between px-4 py-3 text-sm font-normal text-gray-700 hover:bg-white/50 rounded-xl"
+          className="w-full flex items-center justify-between px-4 py-3 text-sm font-normal text-gray-500 hover:bg-white/40 rounded-xl"
         >
           <span>Recent Chats</span>
-          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${historyExpanded ? '' : '-rotate-90'}`} />
+          <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${historyExpanded ? '' : '-rotate-90'}`} />
         </button>
 
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${
             historyExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
@@ -183,17 +183,14 @@ export default function Sidebar({ user }: SidebarProps) {
               <div key={chat.id} className="relative group/chat mb-1">
                 <button
                   onClick={() => router.push(`/search?chat_id=${chat.id}`)}
-                  className="w-full h-auto py-2 px-3 text-sm font-normal text-gray-700 hover:bg-white/50 rounded-xl flex items-start gap-2"
+                  className="w-full h-auto py-2 px-4 text-sm font-normal text-gray-700 hover:bg-white/40 rounded-xl text-left"
                 >
-                  <MessageSquare className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="text-sm font-normal truncate">
-                      {chat.title}
-                    </p>
-                    <p className="text-xs text-gray-600 font-light mt-0.5">
-                      {formatTimestamp(chat.created_at)}
-                    </p>
-                  </div>
+                  <p className="text-sm font-normal truncate">
+                    {chat.title}
+                  </p>
+                  <p className="text-xs text-gray-600 font-light mt-0.5">
+                    {formatTimestamp(chat.created_at)}
+                  </p>
                 </button>
               </div>
             ))}
@@ -222,7 +219,7 @@ export default function Sidebar({ user }: SidebarProps) {
           {!isDemoMode && (
             <button
               onClick={() => router.push("/connections")}
-              className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-white/50 rounded-xl text-sm font-normal"
+              className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-white/40 rounded-xl text-sm font-normal"
             >
               <Settings className="h-4 w-4" />
               <span>Settings</span>
@@ -230,7 +227,7 @@ export default function Sidebar({ user }: SidebarProps) {
           )}
           <button
             onClick={() => signOut()}
-            className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-white/50 rounded-xl text-sm font-normal"
+            className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-white/40 rounded-xl text-sm font-normal"
           >
             <LogOut className="h-4 w-4" />
             <span>Log out</span>
