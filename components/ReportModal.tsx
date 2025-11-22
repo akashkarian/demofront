@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { DailyReport, Source as DemoSource } from "@/lib/demo-data";
 import SmartMarkdown from "./SmartMarkdown";
 import SourceCard from "./SourceCard";
@@ -16,6 +17,8 @@ interface ReportModalProps {
 
 export default function ReportModal({ isOpen, onClose, report }: ReportModalProps) {
   const [selectedSource, setSelectedSource] = useState<DemoSource | null>(null);
+  const pathname = usePathname();
+  const isDashboard = pathname === '/';
 
   // Prevent body scroll when modal is open
   useEffect(() => {

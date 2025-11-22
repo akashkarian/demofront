@@ -31,7 +31,7 @@ const appConfig = {
     iconBg: 'bg-blue-100'
   },
   sheets: {
-    logo: '/logos/google-sheets.webp',
+    logo: '/logos/google-sheets.png',
     name: 'Google Sheets',
     bgColor: 'bg-green-50',
     iconBg: 'bg-green-100'

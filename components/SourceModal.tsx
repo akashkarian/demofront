@@ -41,7 +41,7 @@ const appConfig = {
   salesforce: { logo: '/logos/salesforce.png', name: 'Salesforce', color: '#00A1E0' },
   slack: { logo: '/logos/slack.png', name: 'Slack', color: '#4A154B' },
   drive: { logo: '/logos/drive.png', name: 'Google Drive', color: '#4285F4' },
-  sheets: { logo: '/logos/google-sheets.webp', name: 'Google Sheets', color: '#34A853' },
+  sheets: { logo: '/logos/google-sheets.png', name: 'Google Sheets', color: '#34A853' },
   github: { logo: 'https://cdn.simpleicons.org/github', name: 'GitHub', color: '#181717' },
   quickbooks: { logo: 'https://cdn.simpleicons.org/quickbooks', name: 'QuickBooks', color: '#2CA01C' }
 };

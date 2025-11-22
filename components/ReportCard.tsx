@@ -15,7 +15,7 @@ const appConfig = {
   salesforce: { logo: '/logos/salesforce.png', name: 'Salesforce' },
   slack: { logo: '/logos/slack.png', name: 'Slack' },
   drive: { logo: '/logos/drive.png', name: 'Google Drive' },
-  sheets: { logo: '/logos/google-sheets.webp', name: 'Google Sheets' },
+  sheets: { logo: '/logos/google-sheets.png', name: 'Google Sheets' },
   github: { logo: 'https://cdn.simpleicons.org/github', name: 'GitHub' },
   quickbooks: { logo: 'https://cdn.simpleicons.org/quickbooks', name: 'QuickBooks' }
 };
@@ -36,9 +36,13 @@ export default function ReportCard({ title, icon, summary, sourceCount, sources,
     >
       <div className="flex items-start gap-6">
         <div className="flex-1">
-          <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors mb-3">
-            {title}
-          </h3>
+          <div className="flex items-center gap-2 mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+              {title}
+            </h3>
+            <span className="text-gray-300">|</span>
+            <span className="text-xs text-gray-400">Click to view full report</span>
+          </div>
           <p className="text-sm text-gray-600 mb-4" style={{ lineHeight: '1.8', letterSpacing: '0.01em' }}>
             {summary}
           </p>

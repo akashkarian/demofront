@@ -1,4 +1,9 @@
 // Demo data for Summit Strategy Consulting
+import { mockEmails } from './mock-sources/emails';
+import { mockSlackMessages } from './mock-sources/slack';
+import { mockSalesforceDeals } from './mock-sources/salesforce';
+import { mockDriveDocs } from './mock-sources/drive';
+import { mockSheets } from './mock-sources/sheets';
 
 export interface Source {
   id: string;
@@ -18,6 +23,10 @@ export interface Source {
     participants?: string[];
     lastModified?: string;
     owner?: string;
+    sheetData?: {
+      headers: string[];
+      rows: string[][];
+    };
   };
 }
 
@@ -511,71 +520,149 @@ export const mockDailyReports: Record<string, DailyReport[]> = {
       type: 'client_relationships',
       title: 'Client Relationships & Pipeline',
       icon: '',
-      summary: 'ACME Corp deal advancing to final stages with board approval and timeline acceleration request. Client sentiment analysis shows 83% positive interactions across 47 total communications. Sarah Chen specifically requested Jennifer Martinez as lead consultant based on prior CRM project success. Competitive intelligence indicates McKinsey Digital eliminated, positioning improved against Deloitte. Team alignment confirmed via Slack with resource capacity validated for Q1 2026 start.',
-      content: `# Daily Client Intelligence Report
-**November 20, 2025**
+      summary: 'ACME Corp deal showing rare board approval at proposal stage with specific timeline acceleration request - cross-platform analysis reveals 85% close probability versus 75% Salesforce estimate. NetLogic referral from DataCorp represents $700K opportunity, largest in company history. Client sentiment trending 83% positive with referral flywheel generating 2.5x larger deals than cold outbound. Two expansion opportunities totaling $400K identified through communication pattern analysis. Critical insight: email response velocity predicting close probability better than traditional sales metrics.',
+      content: `
+# Client Relationships & Pipeline Intelligence
+**Daily Analysis - November 20, 2025**
 
-I've analyzed 47 client interactions across Gmail, Salesforce, and Slack to provide insights on your client relationships and sales pipeline.
+**Data Sources**: 8 emails • 4 Slack channels • 3 deals • 1 proposal • 1 budget sheet
 
----
+## Executive Summary
 
-## Pipeline Highlights
+Your pipeline is tracking at **108% of Q4 target**, with $1.188M projected versus the $1.1M goal. The ACME Corp opportunity has reached a critical inflection point - board approval has been confirmed and they've requested an accelerated timeline. Based on cross-platform analysis of email language, Slack team readiness, and budget preparation, the Salesforce probability estimate of 75% should be updated to **85%**.
 
-**ACME Corporation - Digital Transformation ($450K)**
-- **Status**: Proposal sent, board approved, 75% probability
-- **Movement**: Client responded with timeline acceleration request
-- **Next Action**: SOW revision needed by end of week
-- **Risk Level**: Low - highly engaged client with budget approval
+Beyond active deals, expansion opportunities are emerging from your existing client base. DataCorp is proposing a Phase 2 expansion worth $175K, and FinServe has signaled interest in European operations rollout estimated at $225K. Together, these represent **$400K in low-risk revenue** from accounts where you've already proven value.
 
-**Key Insight**: Sarah Chen's email mentions March board presentation as driver for Q1 acceleration. This creates urgency but also validates commitment.
+The most significant strategic insight: your referral engine is working. Deals sourced from satisfied clients are averaging **2.5x larger** than cold outbound opportunities and closing at a 90% rate compared to 45% for non-referred leads.
 
 ---
 
-## Client Communication Analysis
+## ACME Corporation - The Full Story
 
-**Email Activity (Last 24 Hours)**:
-- 12 client emails received
-- 8 responses sent
-- Average response time: 2.3 hours
-- Sentiment: 83% positive
+November 18th brought a game-changing email from Sarah Chen at ACME Corp. On the surface, it's a positive response to your proposal. But analyzing the language reveals this is much more significant than standard sales progress.
 
-**Notable Interactions**:
-- ACME Corp: Positive proposal feedback, specific next steps requested
-- Vertex Systems: Project completion confirmed for Dec 15
-- TechStart: Follow-up on AI implementation scope
+Sarah wrote: *"The board reviewed it last week and we're very impressed with your approach to our digital transformation initiative."* Board reviews at the proposal stage are rare in enterprise deals - they typically happen after verbal commitments are made internally. Getting board time means:
+- Budget is definitively allocated (not pending approval)
+- Sarah has strong internal influence
+- Project is strategic priority with board-level visibility
 
----
+**The Four Requests - What They Mean:**
 
-## Team Discussions
+Sarah made four specific asks in her email. First, she wants to **accelerate Phase 1 completion to Q1** instead of Q2. The driver is a March board presentation, creating a hard external deadline. This isn't a negotiable timeline - it's a forcing function that actually works in your favor because compressed timelines increase close probability.
 
-Your team had 3 client-related Slack conversations:
-- #client-acme: Jennifer Martinez confirmed as lead, team aligned on strategy
-- #sales-pipeline: ACME deal positioning discussed, competitive analysis
-- #delivery: Vertex project wrap-up planning
+Second, she asks for a detailed breakdown of the **$180K cloud migration component**. This tells us she's building an internal business case, likely for CFO approval of the payment schedule. Your Google Sheets budget tracker already contains exactly this breakdown.
 
-**Cross-Platform Insight**: Email shows client urgency (ACME), Salesforce confirms high probability, Slack demonstrates team readiness. All signals aligned for successful close.
+Third, and perhaps most significantly, she asks if **Jennifer Martinez will be the lead consultant**, referencing their collaboration on last year's CRM project where Jennifer "was fantastic." Named person requests based on prior successful delivery eliminate the primary risk factor in enterprise deals - execution capability doubt.
 
----
+Fourth, she wants to schedule a kickoff meeting for the **week of December 2nd**. This is two weeks before the Christmas holiday freeze. The aggressiveness of this timing confirms their urgency to get contracts signed before year-end.
 
-## Action Items
+**What Your Systems Show:**
 
-1. Update ACME SOW with Q1 timeline revision
-2. Schedule December kickoff meeting with Sarah Chen
-3. Prepare cloud migration budget breakdown
-4. Follow up with TechStart on scope clarification
+Your Salesforce record shows this deal at 75% probability in "Proposal Sent" stage. But the cross-platform data tells a different story. The Slack conversation in #client-acme from November 19th shows Jennifer has confirmed her availability to lead, and Alex Kumar has committed to a January 6th start date that perfectly aligns with the Vertex project completion. Your budget sheet has the detailed breakdown they've requested. All the pieces are in place.
+
+The email language, timeline urgency, and named consultant request together indicate a **verbal commitment**. Update the Salesforce probability to 85% and move the stage to "Negotiation."
+
+On competitive positioning, your Salesforce notes reveal that McKinsey Digital was eliminated in October - their proposal came in at over $800K with feedback that their approach felt "too corporate and impersonal." Deloitte is still competing, but you have Jennifer's proven delivery history with this client and your boutique firm's agility versus large firm bureaucracy.
 
 ---
 
-## Competitive Intelligence
+## Client Expansion - The Hidden Revenue Stream
 
-Salesforce notes indicate McKinsey Digital eliminated from ACME opportunity. Deloitte still competing. Your advantage: existing relationship through Jennifer Martinez and tailored approach.`,
+The most valuable insight from analyzing your client communications isn't about new deals - it's about what's happening with existing accounts. The DataCorp relationship demonstrates your real business model in action.
+
+The journey started when you delivered their analytics platform between July and October for $320K. The project exceeded expectations, reducing their reporting time from 40 hours per month to just 2 hours. In November, this success converted into an ongoing support contract at $2K per month. Then on November 16th, Lisa Wang sent an email proposing Phase 2 expansion focused on predictive analytics, with a budget of $150-200K already approved.
+
+But the value extends beyond direct revenue. Lisa has become an active advocate - offering to do a joint case study, inviting you to speak at their user conference, and providing referrals. That referral to NetLogic represents a potential $700K deal.
+
+**The Total Impact:** $320K initial + $24K annual support + $175K Phase 2 + $700K referral value = **$1.26M from a single client acquisition**. This 4x multiplier on the original project represents your actual business model - not transactional project work, but building client ecosystems.
+
+FinServe is following the same trajectory. Their modernization project delivered in early November produced exceptional results: 45% performance improvement, 92% user adoption, zero critical incidents. Robert Kim's November 15th email scheduling the quarterly business review specifically mentions wanting to "discuss 2026 planning" with focus on European operations expansion. Based on the original US project scope of $185K, a European rollout would likely run $200-250K given GDPR compliance, multi-language support, and multiple instance requirements.
+
+---
+
+## New Opportunities - Referral Intelligence
+
+The NetLogic opportunity represents something significant - not just the $700K potential value, but what it reveals about your market position. On November 12th, Maria Santos, the COO of NetLogic Corp, sent an email introduction facilitated by Lisa Wang from DataCorp. The key phrase was *"Lisa assured me you have the expertise."*
+
+Lisa Wang's endorsement carries unusual weight. She's selective about referrals because her reputation is on the line. You delivered $2M in identified opportunities for DataCorp through the analytics platform - she's seen your work quality firsthand. When she tells another COO that you have the expertise for a complex $700K integration project, she's putting her credibility behind that statement.
+
+The NetLogic challenge is post-acquisition integration. They've acquired two competitors in the past year and now operate three separate platforms with different technology stacks - Ruby/Rails, Node.js, and Python/Django, each with different databases. Customer data is fragmented, billing is completely manual, and reporting is nearly impossible. They need to consolidate these into a single unified system while maintaining service continuity.
+
+The budget of **$600-800K over 18 months** is already approved at the board level. They've talked to Big 4 firms but found them too expensive and bureaucratic. Your discovery call is scheduled for November 25th.
+
+The decision after that call needs to be honest. If you're 90%+ confident you can deliver this successfully, pursue it aggressively - it could define your 2026. If you're 70-90% confident, pursue it with a specialist integration partner. If you're below 70% confident, pass professionally. This project is too large and too visible to take on without certainty about execution.
+
+---
+
+## Portfolio Health Indicators
+
+One of the strongest predictors of deal closure that emerges from your integrated data is **communication velocity** - how fast the sales cycle is moving. The ACME Corp opportunity went from initial RFP on November 10th to board review feedback on November 18th. That's just 8 days. This exceptional speed indicates high internal priority on their side. Fast cycles correlate strongly with high close rates because they indicate true prioritization, not exploration.
+
+Similarly, TechStart moved from receiving clarification questions on November 17th to sending a "ready to move forward" email on November 19th - just 2 days. As a contrast, BrightStart received a proposal on November 15th and it's been 5 days with no response, suggesting the project is lower priority for them.
+
+Sentiment analysis across your 15 most recent client emails shows **83% positive tone**, representing a 5-point improvement from last week's analysis. Your portfolio health is improving, not deteriorating. Team capacity data shows current utilization at 78%, with Alex Kumar available January 6th when Vertex completes, and Jennifer Martinez ready to take the ACME lead role the client specifically requested.
+
+---
+
+## The Referral Advantage
+
+A clear pattern is emerging from your business data. In Q3, you successfully delivered the DataCorp analytics platform and the FinServe modernization project. Now in Q4, those satisfied clients have generated two significant referrals: NetLogic at $700K potential and GlobalManufacturing at $350K potential.
+
+The mathematics are striking:
+- Cold outbound average: $210K per deal, 45% close rate
+- Referred deals average: $525K per deal, 90% close rate
+- **Multiplier: 2.5x larger, 2x more likely to close**
+
+This isn't just about easier sales - it's about sustainable competitive advantage. Delivery quality creates client advocacy, which generates bigger and easier deals. Large consulting firms struggle to replicate this because relationship depth doesn't scale well when juggling hundreds of clients. You're positioned perfectly to build deep partnerships that compound in value over time.
+
+---
+
+## This Week's Priorities
+
+**Today:**
+- Send ACME the cloud migration budget breakdown they requested (attach Google Sheets with $180K Phase 2 detail)
+- Propose three specific time slots for December 2-6 kickoff meeting
+
+**This Week:**
+- Complete ACME SOW revision with Q1 Phase 1 timeline (due Friday, November 22)
+- Prepare for NetLogic discovery call on November 25th
+- Check in with TechStart on legal review status
+
+**Next Two Weeks:**
+- Accept CloudTech Summit speaking invitation (deadline December 1st)
+- Create Vertex Systems case study while early delivery is fresh
+- Schedule DataCorp Phase 2 scoping call
+
+---
+
+## The Integration Advantage
+
+Here's what this daily analysis demonstrates about connected business intelligence. Without integration, you would see fragments: an email from ACME that seems positive, a Salesforce record showing 75% probability, and team members who seem ready for new work. Each piece of data exists in isolation.
+
+With integration, you see the complete picture. The email language reveals board approval, which is rare at the proposal stage. The Salesforce probability estimate undervalues the opportunity based on verbal commitment signals. The Slack conversations confirm not just team availability but specific enthusiasm and strategic alignment. Your budget sheet proves you're prepared for the exact request the client made.
+
+**The result:** Decision confidence transforms from *"this feels promising"* to *"this is an 85% probability deal with specific actions required to guarantee the close."*
+
+You're no longer operating on gut instinct or isolated data points. You're seeing patterns across your entire business - patterns that no single system could reveal on its own.
+`,
       sources: [
-        mockSources.acme_email_1,
-        mockSources.acme_email_2,
-        mockSources.acme_deal,
-        mockSources.team_slack,
-        mockSources.team_slack_2,
-        mockSources.proposal_drive
+        mockEmails[0],   // ACME Q4 transformation
+        mockEmails[1],   // ACME initial RFP
+        mockEmails[2],   // Vertex final deliverables
+        mockEmails[3],   // TechStart scope
+        mockEmails[4],   // DataCorp success story
+        mockEmails[8],   // TechStart ready to move forward
+        mockEmails[9],   // NetLogic referral
+        mockEmails[7],   // GlobalManufacturing lead
+        mockSlackMessages[0],  // #client-acme
+        mockSlackMessages[1],  // #sales-pipeline ACME
+        mockSlackMessages[5],  // #bizdev partnership
+        mockSlackMessages[6],  // #sales-pipeline TechStart
+        mockSalesforceDeals[0], // ACME deal
+        mockSalesforceDeals[2], // TechStart deal
+        mockSalesforceDeals[5], // NetLogic deal
+        mockDriveDocs[0],      // ACME proposal
+        mockSheets[0]          // ACME budget
       ],
       generated_date: '2025-11-20T06:00:00Z'
     },
@@ -584,131 +671,227 @@ Salesforce notes indicate McKinsey Digital eliminated from ACME opportunity. Del
       type: 'financial_overview',
       title: 'Financial Overview',
       icon: '',
-      summary: 'Q4 revenue performance tracking 8% above target at $1.188M projected versus $1.1M goal. Active pipeline shows $683K weighted value across three major opportunities with ACME Corp representing largest pending deal at $450K. Cash flow analysis reveals strong operating position at $502K net with accounts receivable of $156K expected within 30 days. Vertex Systems final payment of $85K scheduled for December 15th. Revenue recognition schedule for ACME project structured across 12 months with Phase 1 deposit representing initial $37.5K.',
-      content: `# Daily Financial Summary
-**November 20, 2025**
+      summary: 'Q4 tracking at 108% of target with $1.188M projected versus $1.1M goal driven by $505K closed revenue and $683K weighted pipeline. Cross-platform analysis suggests pipeline weighting understates actual close probability - ACME should be 85% not 75% based on email signals raising weighted pipeline to $772K. Cash position strong at $502K net with Vertex final payment of $85K due December 15th providing year-end liquidity. Pipeline concentration shows ACME representing 58% of weighted value presenting manageable risk given board approval validation. Q1 2026 visibility building at $570-770K range from ACME Phase 1 continuation and expansion opportunities.',
+      content: `
+# Financial Overview & Pipeline Value
+**Daily Analysis - November 20, 2025**
 
-Analysis of revenue, pipeline, and financial health based on QuickBooks and Salesforce data.
+**Data Sources**: 3 Salesforce deals • 2 Google Sheets • 1 email
 
----
+## Executive Summary
 
-## Revenue Performance
+Q4 revenue performance is tracking at **108% of target** with $1.188M projected against the $1.1M goal. This represents $505K in closed revenue and $683K in weighted pipeline value. The ACME Corp opportunity alone, if it closes as expected on December 31st, would push Q4 to 128% of target.
 
-**Q4 2025 Status**:
-- Target: $1.1M
-- Actual (Closed): $505K
-- Pipeline (Weighted): $683K
-- **Projected Total**: $1.188M (108% of target)
+Cash flow position is strong at **$502K net** with operating account balance of $428K and receivables of $156K expected within 30 days. The Vertex Systems final payment of $85K is scheduled for December 15th, providing additional liquidity before year-end.
 
-**Recent Closures**:
-- DataCorp Analytics: $320K (Closed Oct 28)
-- FinServe Modernization: $185K (Closed Nov 12)
+The key insight from today's analysis: your pipeline weighting methodology may be understating actual close probability. Cross-platform intelligence from email and Slack communications suggests ACME should be weighted at 85% rather than 75%, and TechStart at 85% rather than 60%. This would increase weighted pipeline from $683K to $758K.
 
 ---
 
-## Active Pipeline
+## Revenue Performance Analysis
 
-**High Probability Deals**:
-- ACME Corp Digital Transformation: $450K (75% prob) - Expected close Dec 31
-- Vertex Systems Cloud Migration: $280K (90% prob) - Closing Dec 15
-- TechStart AI Implementation: $125K (60% prob) - Q1 2026
+Your Q4 performance breaks down into two categories: closed business and active pipeline. On the closed side, you've delivered $505K across two major projects. DataCorp's analytics platform closed in July and was successfully delivered in October for $320K. FinServe's modernization project closed in September and delivered in early November for $185K. Both projects not only hit their revenue targets but have generated follow-on opportunities - a pattern worth noting.
 
-**Weighted Pipeline Value**: $683K
+The active pipeline contains four opportunities with varying close probabilities. The Vertex Systems cloud migration is essentially guaranteed revenue - the project is in final delivery phase with completion scheduled for December 15th and the final payment of $85K already contractually committed. This brings your Q4 closed revenue to an effective $590K when you include Vertex.
 
----
+The ACME Corp digital transformation at $450K with 75% probability represents your largest opportunity. However, as detailed in today's Client Relationships report, email language analysis and cross-platform validation suggest this should be weighted at 85%. At the higher probability, this deal contributes $382.5K to weighted pipeline instead of $337.5K.
 
-## Cash Flow Analysis
+TechStart's AI implementation at $125K is currently weighted at 60% probability in Salesforce. But David Park's November 19th email stating "we're ready to move forward" with confirmed checkmarks on pricing, timeline, and integrations indicates verbal commitment. The only remaining step is legal review, which is procurement formality rather than sales risk. This deal should be weighted at 85%, contributing $106.25K instead of $75K.
 
-**Current Position**:
-- Operating Account Balance: $428K
-- Accounts Receivable (Outstanding): $156K
-- Accounts Payable (Due): $82K
-- **Net Position**: $502K
+BrightStart's advisory retainer at $45K shows 70% probability and appears accurate based on email responsiveness patterns. This contributes $31.5K to weighted pipeline.
 
-**Revenue Recognition (Next 30 Days)**:
-- Vertex final payment: $85K (Dec 15)
-- ACME deposit (if closed): $37.5K (Dec 31)
-- Monthly retainers: $42K
+**Revised Weighted Pipeline:** $252K (Vertex) + $382.5K (ACME at 85%) + $106.25K (TechStart at 85%) + $31.5K (BrightStart) = **$772.25K**
+
+Combined with $505K closed, your **Q4 projection becomes $1.277M** or 116% of target. If ACME closes, you hit $1.405M or 128% of target.
 
 ---
 
-## Budget Utilization
+## Cash Flow Position
 
-The ACME project budget breakdown shows $450K total across 4 phases with detailed cost allocation. Phase 1 represents 16.7% of total project value with 2-month timeline.
+Your current cash position shows healthy liquidity and manageable obligations. The operating account holds $428K, which covers approximately 3-4 months of operating expenses based on your team size and overhead. This provides comfortable runway and flexibility for strategic investments.
 
-**Resource Cost Planning**: Team assignments align with revenue projections. Jennifer Martinez and Alex Kumar allocation supports ACME delivery without impacting existing commitments.`,
+Accounts receivable stands at $156K with the majority expected within 30 days. The largest component is the Vertex final payment of $85K due December 15th, which is contractually committed and low risk given Michael Torres' email confirming early delivery and his proactive mention of ensuring quick payment processing.
+
+Accounts payable of $82K due is well within normal operating parameters and presents no cash flow concerns. Your **net position of $502K** represents strong financial health for a 12-person consulting firm.
+
+Looking forward to the next 30 days, revenue recognition includes the Vertex final payment ($85K on Dec 15), potential ACME deposit if the deal closes ($37.5K on Dec 31), and monthly retainer payments totaling approximately $42K. This would bring year-end cash position to approximately $575K before accounting for operating expenses.
+
+The ACME project budget breakdown in your Google Sheets shows thoughtful revenue recognition planning across the 12-month engagement. Phase 1 is structured as 50% deposit ($37.5K) on contract signature with the remaining 50% on Phase 1 completion. This front-loaded payment structure provides early cash flow and demonstrates client commitment. Phase 2 through 4 follow a monthly payment schedule that aligns cash collection with work delivery.
+
+---
+
+## Pipeline Value Concentration
+
+One financial risk worth monitoring is pipeline concentration. The ACME opportunity represents 58% of your active weighted pipeline value ($383K of $772K). If this deal were to unexpectedly stall or lose, it would significantly impact Q4 and Q1 projections.
+
+However, the cross-platform intelligence provides confidence that this risk is lower than it appears. The combination of board approval email signals, Salesforce deal progression, Slack team confirmation, and budget preparation all validate the opportunity strength. Additionally, the client's specific request for Jennifer Martinez as lead consultant based on prior successful delivery substantially reduces execution risk.
+
+The mitigation strategy for concentration risk is already working - you have three other active opportunities (Vertex, TechStart, BrightStart) plus two expansion opportunities (DataCorp, FinServe) plus two new inbound leads (NetLogic, GlobalManufacturing). Diversification is improving.
+
+For 2026 planning, the NetLogic opportunity at $700K would represent even higher concentration if it closes. The strategic question becomes whether to pursue maximum revenue growth or maintain pipeline diversification. Given your strong delivery track record and the referral source quality, pursuing NetLogic makes sense if capability fit is validated in the November 25th discovery call.
+
+---
+
+## Revenue Recognition & Projections
+
+Looking beyond Q4 into early 2026, your revenue visibility is building nicely. If ACME closes in late December, Phase 1 work generates $157.5K in Q1 revenue ($37.5K deposit + $37.5K completion + $60K first month of Phase 2). TechStart's $125K project with a January 6th kickoff contributes $62.5K deposit in Q1. These two deals alone provide $220K in Q1 visibility.
+
+The expansion opportunities from DataCorp ($175K for Phase 2) and FinServe ($225K for European operations) would add another $400K to the Q1-Q2 pipeline if scoping conversations progress as expected in December. Both of these carry lower sales risk than new business because you've already proven value and established trust.
+
+NetLogic, if pursued after the discovery call and closed in Q1, could contribute $150-200K in Q1 revenue based on an 18-month project structure. However, this assumes the discovery validates fit and you move quickly through proposal and contracting.
+
+**Q1 2026 Projection:** $220K from ACME and TechStart (high confidence) + $200K from expansion opportunities (medium confidence) + $150K from NetLogic Phase 1 (conditional on close) = **$570K to $770K range**.
+
+This would represent strong momentum continuation from Q4 and positions 2026 for meaningful growth versus 2025's projected $6.1M annual revenue.
+
+---
+
+## This Week's Financial Actions
+
+The immediate priority is ensuring ACME receives the cloud migration budget breakdown they requested. This isn't just a sales action - it's about demonstrating financial planning rigor and preparedness. Send the Google Sheets file today showing the detailed $180K Phase 2 allocation across AWS infrastructure ($60K), application migration ($70K), security setup ($30K), and testing ($20K).
+
+Update your Salesforce weighted pipeline calculations to reflect the revised probabilities for ACME (85%) and TechStart (85%) based on cross-platform intelligence. This will give you more accurate revenue forecasting and help with resource planning decisions.
+
+Confirm the Vertex final payment logistics with Michael Torres. While the December 15th payment is contractually committed, proactive communication ensures smooth processing and maintains the strong client relationship for potential future work.
+
+---
+
+## The Financial Intelligence Advantage
+
+The difference between traditional financial reporting and what you're seeing in this analysis is the integration of sales intelligence with financial data. Your accounting system shows cash balances and invoices. Your CRM shows pipeline value. But neither system alone reveals the quality signals that predict actual cash flow.
+
+When you connect email communication patterns with deal probabilities, you see that fast sales cycles (ACME's 8-day RFP-to-board-review) correlate with higher close rates. When you combine Slack team capacity discussions with revenue projections, you can validate whether pipeline opportunities are actually deliverable with current resources.
+
+The $1.26M lifetime value calculation for DataCorp isn't visible in any single system - it requires connecting the original project value from Salesforce, the support contract from recurring revenue tracking, the Phase 2 email from Gmail, and the referral value from the NetLogic opportunity. This complete picture transforms how you think about client acquisition costs and long-term business strategy.
+
+You're making financial decisions with operational and relationship context, not just numbers in isolation.
+`,
       sources: [
-        mockSources.acme_deal,
-        mockSources.budget_sheets
+        mockSalesforceDeals[0], // ACME deal
+        mockSalesforceDeals[1], // Vertex deal
+        mockSalesforceDeals[2], // TechStart deal
+        mockSheets[0],          // ACME budget
+        mockSheets[1],          // Q4 revenue forecast
+        mockEmails[2]           // Vertex completion email
       ],
       generated_date: '2025-11-20T06:00:00Z'
     },
     {
       id: 'report_003',
       type: 'team_projects',
-      title: 'Team & Project Updates',
+      title: 'Department Activity & Productivity',
       icon: '',
-      summary: 'Vertex Systems cloud migration project remains on schedule for December 15th completion freeing up Alex Kumar for January assignments. ACME Corp staffing plan confirmed with Jennifer Martinez as lead consultant leveraging existing client relationship from prior CRM implementation. Current team utilization at 78% provides capacity buffer for new Q1 engagements. Internal Slack activity shows strong cross-team alignment on ACME opportunity with no resource conflicts identified. Upcoming week includes Vertex final testing kickoff and ACME SOW revision with executive kickoff proposed for early December.',
-      content: `# Team & Project Status
-**November 20, 2025**
+      summary: 'Team operating at 78% utilization with strong cross-functional coordination between sales and delivery departments. Email response time averaging 2.3 hours demonstrates high responsiveness without overload. Collaboration patterns from Slack show proactive capacity planning with team members self-organizing around resource availability. Performance signals exceptional - Alex Kumar delivering Vertex ahead of schedule and Jennifer Martinez requested by name for ACME engagement. Internal knowledge sharing active with Maria Santos supporting teammates on technical questions. Department dynamics healthy with no bottlenecks or communication silos detected.',
+      content: `
+# Department Activity & Productivity
+**Daily Analysis - November 20, 2025**
 
-Daily summary of team activities, project progress, and resource allocation based on Slack and email communications.
+**Data Sources**: 5 Slack channels • 3 emails • 1 utilization sheet
 
----
+## Executive Summary
 
-## Active Projects
+Your team is operating at **78% utilization** across four key functions, sitting comfortably within the healthy 80-85% target range. Department collaboration patterns from Slack show strong cross-functional coordination with sales and delivery teams actively aligned on the ACME opportunity. Response time analysis reveals average email turnaround of **2.3 hours** on client communications, indicating high responsiveness without signs of overload.
 
-**Vertex Systems - Cloud Migration**:
-- Status: Final phase, on track
-- Completion: December 15, 2025
-- Team: Alex Kumar (lead), Maria Santos
-- Next Milestone: Final testing week of Dec 8
+Notable productivity signals include Alex Kumar's ahead-of-schedule delivery on Vertex (completing December 12th vs contracted December 15th) and Jennifer Martinez being specifically requested by name for the ACME project based on prior successful client work. Internal Slack communication shows proactive capacity planning with team members self-organizing around resource availability.
 
-**Key Update**: Team Slack confirms Vertex wrapping on schedule, freeing up Alex Kumar for January assignments.
+The key insight: your departments aren't operating in silos. Sales shares pipeline intelligence that delivery uses for capacity planning. Delivery communicates project timing that sales uses for new deal scoping. This cross-functional coordination is enabling the smooth project transitions that prevent utilization volatility.
 
 ---
 
-## Team Capacity Analysis
+## Department Assignments & Workload
 
-**Available Starting January 2026**:
-- Alex Kumar: Full availability (Vertex complete)
-- Jennifer Martinez: 50% capacity (can lead new project)
-- Maria Santos: Continues on DataCorp support (20% capacity)
+The team utilization tracker shows how work is currently distributed across your consulting staff. Alex Kumar is running at 95% billable utilization on the Vertex Systems cloud migration project, with the remaining 5% allocated to pre-sales technical support for the ACME opportunity. His Slack updates in #delivery channel indicate final testing is complete and the project is tracking for early completion.
 
-**ACME Project Staffing**:
-- Lead: Jennifer Martinez (client requested, relationship exists)
-- Cloud Engineering: Alex Kumar (available Jan 6)
-- Support: To be assigned
+Jennifer Martinez's time breaks down into 38% on ACME proposal development, 20% on FinServe quarterly business review preparation, and 42% on internal activities including strategy work and administrative tasks. The #client-acme Slack channel shows she's confirmed availability to lead the ACME engagement full-time starting in January, transitioning from her current mixed workload to dedicated project leadership.
 
-**Capacity Assessment**: Team can support ACME engagement without additional hiring. Current utilization at 78%, target is 80-85%.
+Maria Santos is allocated 20% to DataCorp platform support (which has moved to maintenance mode), 30% to TechStart proposal development, and 50% to internal activities including training and capability building. Her Slack message in #sales-pipeline expressing interest in the TechStart AI project aligns with her background in machine learning from her previous role.
+
+Robert Kim shows 62% utilization on FinServe project delivery, 25% on marketing and content creation (including the DataCorp case study being drafted), and 13% on administrative work. This balanced allocation between billable work and business development activities supports the firm's growth objectives.
 
 ---
 
-## Internal Collaboration
+## Cross-Department Collaboration
 
-**Slack Activity Summary**:
-- #client-acme: 12 messages - Deal strategy alignment
-- #sales-pipeline: 8 messages - Pipeline review and forecasting
-- #delivery: 15 messages - Vertex completion planning
+Analyzing Slack activity reveals strong coordination between your sales and delivery functions. The #sales-pipeline channel shows a pattern where Demo shares new opportunity updates and delivery team members respond with capacity confirmations and capability assessments. This isn't just acknowledgment - it's active participation in qualification decisions.
 
-**Cross-Team Insight**: Sales and delivery teams aligned on ACME opportunity. No resource conflicts identified. Jennifer's prior relationship with ACME creates confidence in successful delivery.
+On November 12th, when Demo posted about the ACME Corp discovery call, Jennifer Martinez immediately asked about deal size and timeline. Alex Kumar followed up with capacity confirmation. Maria Santos offered to support on the data warehouse component. This rapid, collaborative response demonstrates that deals aren't being sold in isolation from delivery reality.
+
+The #client-acme channel created specifically for the ACME opportunity shows 12 messages over the past week. The tone is confident and strategic rather than concerned or reactive. Jennifer is leading team alignment on approach, Alex is already reviewing infrastructure documentation proactively, and there's consensus on making this a reference account opportunity. This level of coordination before contract signature indicates strong delivery readiness.
+
+The #delivery channel focus on Vertex completion shows disciplined project closeout processes. Alex is preparing comprehensive documentation, scheduling knowledge transfer sessions, and coordinating final review meetings. This professional approach to project endings creates the foundation for reference accounts and reduces client-side delivery risk.
 
 ---
 
-## Upcoming Commitments
+## Response Time & Availability Patterns
 
-**This Week**:
-- Vertex final testing kickoff
-- ACME SOW revision
-- TechStart scope clarification call
+Email response time analysis across the past week shows your team maintaining an average **2.3-hour turnaround** on client communications. This breaks down by type: client questions average 1.8 hours, proposal requests average 3.2 hours, and scheduling emails average 1.5 hours. These response times sit well within professional services best practices without indicating team overload.
 
-**Next Week**:
-- ACME executive kickoff (proposed)
-- Vertex final delivery
-- Q4 pipeline review meeting`,
+The ACME Corp sales cycle demonstrates this responsiveness in action. Initial RFP received November 10th at 10:15 AM was acknowledged by 2:30 PM the same day - a 4.25-hour turnaround. Full proposal delivered November 15th, just 5 days from RFP. TechStart's clarification questions on November 17th received comprehensive responses within 3 hours. This velocity happens because capacity exists to respond quickly.
+
+Slack response patterns show similar health. Messages in project-specific channels (#client-acme, #delivery) typically receive responses within 15-30 minutes during business hours. This rapid internal communication enables fast decision-making and prevents bottlenecks from forming.
+
+One positive indicator: no signs of after-hours communication stress. Slack timestamps show conversations happening within normal business hours (9 AM - 6 PM) with occasional strategic discussions extending to early evening but no late-night or weekend messaging patterns that would suggest burnout or unsustainable pace.
+
+---
+
+## Capacity & Resource Intelligence
+
+The most valuable capacity signal comes from proactive communication rather than utilization calculations. In the November 19th #client-acme Slack discussion, Alex Kumar voluntarily committed to January 6th availability, unprompted. This shows team members are thinking ahead about capacity rather than being reactively assigned.
+
+Similarly, Maria Santos mentioned in #sales-pipeline that her DataCorp project has moved to maintenance mode, freeing up bandwidth. Robert Kim noted in #general that he has capacity for strategic work. This self-organization around resource planning reduces coordination overhead and enables faster response to new opportunities.
+
+The January 6th timing for both ACME kickoff and Alex Kumar's availability isn't coincidental - it's the result of sales and delivery coordination. Vertex's December 15th completion date was known when ACME proposal was being developed, allowing accurate staffing commitments in the proposal. This synchronized planning prevents the overpromising that creates delivery stress.
+
+For the ACME opportunity specifically, the capacity math shows Jennifer at 100% allocation, Alex at 100%, and Maria at 20-30% support on data warehouse components. This totals approximately 2.2-2.3 FTE dedicated to a project budgeted for $450K over 12 months, translating to roughly $37.5K monthly revenue with estimated team costs of $25-28K monthly. The margins support quality delivery without resource strain.
+
+---
+
+## Performance & Quality Signals
+
+Client feedback provides the strongest performance indicators. Michael Torres' November 19th email about Vertex specifically states "everything performed better than expected" with concrete metrics: database migration completed 2 days ahead of schedule, query performance improvements of 60% versus the promised 40%, and zero data integrity issues. This level of exceeding expectations doesn't happen accidentally - it reflects team skill and project management discipline.
+
+Sarah Chen's request for Jennifer Martinez by name on the ACME project, referencing her as "fantastic" from their prior CRM implementation, represents peer validation of individual performance. This type of named consultant request is rare and valuable - it indicates execution capability that the client has personally validated.
+
+The Slack #wins channel from November 12th captured the team celebrating the FinServe deal closure, with specific recognition of Robert Kim's delivery quality. The collaborative celebration and peer recognition suggest healthy team culture and mutual respect rather than competitive internal dynamics.
+
+Internal collaboration quality shows in knowledge-sharing patterns. When Jennifer asked a technical question about Snowflake data warehouses in #tech-talk, Maria Santos immediately offered to help based on her DataCorp implementation experience. This willingness to share expertise across team members prevents knowledge silos and builds collective capability.
+
+---
+
+## This Week's Department Priorities
+
+**Delivery Focus:**
+- Vertex: Final testing and knowledge transfer sessions (Alex Kumar leading)
+- Coordinate December 10th final review with client
+
+**Sales Support:**
+- ACME SOW revision completion by Friday (Jennifer Martinez + Demo)
+- NetLogic discovery call preparation for November 25th
+- TechStart contract review follow-up
+
+**Cross-Functional:**
+- Review capacity scenarios if both ACME and NetLogic opportunities close
+- Begin quiet outreach to potential senior consultant candidates for scaling needs
+
+---
+
+## The People Intelligence Advantage
+
+Traditional workforce analytics show you hours logged and utilization percentages. What you're seeing here is different - it's understanding how your people actually work together, what motivates their performance, and where capacity really exists.
+
+When Jennifer volunteers to lead ACME despite it being a demanding full-time engagement, that signals confidence in both the opportunity quality and her capability to deliver. When Alex proactively prepares for ACME cloud architecture while still delivering Vertex, that shows professional maturity and forward-thinking. When Maria offers to support on components outside her primary assignment, that reveals collaborative culture.
+
+These signals don't appear in time-tracking systems or org charts. They emerge from connecting communication patterns with work assignments and outcomes. You're not just managing headcount and hours - you're seeing team dynamics, collaboration quality, and cultural health in real-time.
+
+This visibility transforms workforce decisions from "who has available hours?" to "who's ready and enthusiastic for this work, and how can we set them up for success?"
+`,
       sources: [
-        mockSources.team_slack,
-        mockSources.team_slack_2
+        mockSlackMessages[0],  // #client-acme team discussion
+        mockSlackMessages[1],  // #sales-pipeline coordination
+        mockSlackMessages[2],  // #delivery Vertex completion
+        mockSlackMessages[7],  // #team-standup daily
+        mockEmails[2],         // Vertex completion email
+        mockSheets[2]          // Team utilization tracker
       ],
       generated_date: '2025-11-20T06:00:00Z'
     }

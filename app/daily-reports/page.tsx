@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { getDailyReports, DailyReport } from "@/lib/demo-data";
 import ReportCard from "@/components/ReportCard";
 import ReportModal from "@/components/ReportModal";
@@ -33,6 +33,16 @@ export default function DailyReportsPage() {
     }
   };
 
+  const navigateDay = (direction: 'prev' | 'next') => {
+    const newDate = new Date(selectedDate);
+    if (direction === 'prev') {
+      newDate.setDate(newDate.getDate() - 1);
+    } else {
+      newDate.setDate(newDate.getDate() + 1);
+    }
+    setSelectedDate(newDate);
+  };
+
   return (
     <div className="flex h-screen bg-white">
       <div className="p-6">
@@ -40,7 +50,7 @@ export default function DailyReportsPage() {
           <Sidebar user={user} />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto p-8 pt-16">
+      <div className="flex-1 overflow-y-auto p-8 pt-12">
         <div className="max-w-7xl mx-auto">
           {/* Header with Date and Calendar */}
           <div className="flex items-start justify-between mb-12">
@@ -57,23 +67,32 @@ export default function DailyReportsPage() {
               <p className="text-sm text-gray-400 font-light mt-2">Viewing all reports for this day</p>
             </div>
 
-            {/* Right: Calendar Picker */}
-            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="font-normal">
-                  <CalendarIcon className="h-4 w-4 mr-2" />
-                  Change Date
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={handleDateSelect}
-                  captionLayout="dropdown"
-                />
-              </PopoverContent>
-            </Popover>
+            {/* Right: Date Navigation */}
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => navigateDay('prev')} className="font-normal">
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Previous Day
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => navigateDay('next')} className="font-normal">
+                Next Day
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="font-normal">
+                    <CalendarIcon className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={handleDateSelect}
+                    captionLayout="dropdown"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
 
           {/* Report Cards */}

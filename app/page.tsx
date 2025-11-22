@@ -3,18 +3,70 @@
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/sidebar";
-import { ArrowUp, Plus, Mic } from "lucide-react";
+import { ArrowUp, Plus, Mic, Calendar, AlertTriangle, TrendingUp, Info, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { getDailyReports } from "@/lib/demo-data";
+import { mockActionItems, mockAlerts } from "@/lib/dashboard-data";
+import SourceModal from "@/components/SourceModal";
+import ReportModal from "@/components/ReportModal";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
+  const [selectedSource, setSelectedSource] = useState<any>(null);
+  const [selectedReport, setSelectedReport] = useState<any>(null);
+  const [actionFilter, setActionFilter] = useState<string>('all');
+  const [actionSort, setActionSort] = useState<string>('date');
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchInput.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchInput)}`);
+    }
+  };
+
+  // Get today's reports
+  const today = new Date();
+  const dateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const reports = getDailyReports(dateString);
+
+  // Filter and sort action items
+  let filteredActions = mockActionItems;
+  if (actionFilter !== 'all') {
+    filteredActions = filteredActions.filter(action => action.source.appType === actionFilter);
+  }
+
+  const sortedActions = [...filteredActions].sort((a, b) => {
+    if (actionSort === 'date') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    return 0;
+  });
+
+  const getAlertColor = (level: string) => {
+    switch (level) {
+      case 'critical': return 'bg-red-50 border-red-200 text-red-900';
+      case 'important': return 'bg-orange-50 border-orange-200 text-orange-900';
+      case 'opportunity': return 'bg-blue-50 border-blue-200 text-blue-900';
+      default: return 'bg-gray-50 border-gray-200 text-gray-900';
+    }
+  };
+
+  const getAlertIcon = (level: string) => {
+    switch (level) {
+      case 'critical': return <AlertTriangle className="h-4 w-4 text-red-600" />;
+      case 'important': return <TrendingUp className="h-4 w-4 text-orange-600" />;
+      case 'opportunity': return <Info className="h-4 w-4 text-blue-600" />;
+      default: return <Info className="h-4 w-4 text-gray-600" />;
     }
   };
 
@@ -27,12 +79,169 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Main content area with search bar at bottom */}
-      <div className="flex-1 flex flex-col relative">
-        <div className="flex-1"></div>
+      {/* Main content area */}
+      <div className="flex-1 overflow-y-auto p-8 pt-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Two Column Layout */}
+          <div className="grid grid-cols-3 gap-6">
+            {/* Left Column - Main Content */}
+            <div className="col-span-2 space-y-6">
+              {/* Daily Reports Summary */}
+              <div>
+                <h2 className="text-2xl font-normal text-gray-900 mb-4">Today's Awareness Reports</h2>
+                <div className="grid grid-cols-3 gap-4">
+                  {reports.map((report) => {
+                    const uniqueApps = [...new Set(report.sources.map(s => s.appType))];
+                    const appLogos = uniqueApps.map(appType => {
+                      switch(appType) {
+                        case 'gmail': return '/logos/gmail.webp';
+                        case 'salesforce': return '/logos/salesforce.png';
+                        case 'slack': return '/logos/slack.png';
+                        case 'drive': return '/logos/drive.png';
+                        case 'sheets': return '/logos/google-sheets.png';
+                        default: return '';
+                      }
+                    });
 
-        {/* Search Bar at Bottom */}
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center px-8">
+                    return (
+                      <button
+                        key={report.id}
+                        onClick={() => setSelectedReport(report)}
+                        className="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-md hover:border-gray-300 transition-all text-left group flex flex-col"
+                        style={{ height: '255px' }}
+                      >
+                        <h3 className="text-sm font-semibold text-gray-900 mb-3 group-hover:text-gray-700">
+                          {report.title}
+                        </h3>
+                        <div className="flex-1 overflow-y-auto mb-2">
+                          <p className="text-xs text-gray-500" style={{ lineHeight: '1.6' }}>
+                            {report.summary}
+                          </p>
+                        </div>
+
+                        {/* Source logos */}
+                        <div className="flex items-center gap-2 mb-3 pt-3 border-t border-gray-100">
+                          {appLogos.map((logo, idx) => (
+                            <img
+                              key={idx}
+                              src={logo}
+                              alt="source"
+                              className="w-4 h-4 object-contain"
+                            />
+                          ))}
+                        </div>
+
+                        <div className="flex items-center gap-1 text-xs text-gray-400">
+                          <Calendar className="h-3 w-3" />
+                          <span>View full report →</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Key Action Items */}
+              <div className="flex flex-col" style={{ maxHeight: '400px' }}>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-normal text-gray-900 mb-0">Key Action Items</h2>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <SlidersHorizontal className="h-4 w-4" />
+                        <span className="text-xs">Filter</span>
+                        <ChevronDown className="h-3 w-3" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setActionFilter('all')}>
+                        All Sources
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => setActionFilter('gmail')} className="gap-2">
+                        <img src="/logos/gmail.webp" alt="Gmail" className="w-4 h-4 object-contain" />
+                        Gmail Only
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setActionFilter('slack')} className="gap-2">
+                        <img src="/logos/slack.png" alt="Slack" className="w-4 h-4 object-contain" />
+                        Slack Only
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setActionFilter('drive')} className="gap-2">
+                        <img src="/logos/drive.png" alt="Drive" className="w-4 h-4 object-contain" />
+                        Drive Only
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setActionFilter('sheets')} className="gap-2">
+                        <img src="/logos/google-sheets.png" alt="Sheets" className="w-4 h-4 object-contain" />
+                        Sheets Only
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setActionFilter('salesforce')} className="gap-2">
+                        <img src="/logos/salesforce.png" alt="Salesforce" className="w-4 h-4 object-contain" />
+                        Salesforce Only
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <div className="bg-gray-50 rounded-2xl p-1 flex-1 overflow-y-auto">
+                  <div className="space-y-1">
+                    {sortedActions.map((action, idx) => (
+                      <button
+                        key={action.id}
+                        onClick={() => setSelectedSource(action.source)}
+                        className="w-full bg-white hover:bg-gray-50 rounded-xl p-4 transition-all text-left group flex items-start gap-4"
+                      >
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-900 mb-1 group-hover:text-gray-700">
+                            {action.title}
+                          </p>
+                          <p className="text-xs text-gray-400">{action.createdAt}</p>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-400 flex-shrink-0">
+                          <img
+                            src={action.source.appType === 'gmail' ? '/logos/gmail.webp' :
+                                 action.source.appType === 'slack' ? '/logos/slack.png' :
+                                 action.source.appType === 'drive' ? '/logos/drive.png' :
+                                 action.source.appType === 'sheets' ? '/logos/google-sheets.png' :
+                                 '/logos/salesforce.png'}
+                            alt={action.source.appType}
+                            className="w-4 h-4 object-contain"
+                          />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Alerts */}
+            <div className="col-span-1 flex flex-col" style={{ maxHeight: '726px' }}>
+              <h2 className="text-2xl font-normal text-gray-900 mb-4">Alerts</h2>
+              <div className="space-y-3 overflow-y-auto flex-1 rounded-2xl">
+                {mockAlerts.map((alert) => (
+                  <div
+                    key={alert.id}
+                    className={`rounded-2xl p-4 border-2 ${getAlertColor(alert.level)}`}
+                  >
+                    <div className="flex items-start gap-3 mb-2">
+                      {getAlertIcon(alert.level)}
+                      <h3 className="text-sm font-semibold flex-1">{alert.title}</h3>
+                    </div>
+                    <p className="text-xs mb-2" style={{ lineHeight: '1.5' }}>
+                      {alert.message}
+                    </p>
+                    <p className="text-xs opacity-75 italic">
+                      {alert.impact}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Search Bar at Bottom */}
+      <div className="fixed bottom-8 left-0 right-0 flex justify-center px-8" style={{ left: 'calc(256px + 48px)' }}>
           <div className="w-full max-w-3xl">
             <form onSubmit={handleSearchSubmit}>
               <div className="relative">
@@ -85,7 +294,24 @@ export default function DashboardPage() {
             </form>
           </div>
         </div>
-      </div>
+
+      {/* Source Modal */}
+      {selectedSource && (
+        <SourceModal
+          isOpen={!!selectedSource}
+          onClose={() => setSelectedSource(null)}
+          source={selectedSource}
+        />
+      )}
+
+      {/* Report Modal */}
+      {selectedReport && (
+        <ReportModal
+          isOpen={!!selectedReport}
+          onClose={() => setSelectedReport(null)}
+          report={selectedReport}
+        />
+      )}
     </div>
   );
 }
