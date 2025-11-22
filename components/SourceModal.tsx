@@ -354,10 +354,10 @@ export default function SourceModal({ isOpen, onClose, source }: SourceModalProp
         onClick={onClose}
       />
 
-      {/* Modal centered in content area */}
+      {/* Modal centered on full screen */}
       <div
-        className="fixed z-50 flex items-center justify-center"
-        style={{ top: 0, bottom: 0, left: 'calc(256px + 48px)', right: 0, pointerEvents: 'none' }}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        style={{ pointerEvents: 'none' }}
       >
         <div
           className="bg-white rounded-3xl w-[90vw] max-w-5xl h-[85vh] flex flex-col shadow-2xl"
